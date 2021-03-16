@@ -9,7 +9,7 @@ const leaderRouter = express.Router();
 leaderRouter.use(bodyParser.json());
 
 leaderRouter.route('/')
-.get((req,res,next) => {
+.get(authenticate.verifyUser, (req,res,next) => {
     Leaders.find({})
     .then((leaders) => {
         res.statusCode = 200;
@@ -43,7 +43,7 @@ leaderRouter.route('/')
 });
 
 leaderRouter.route('/:leaderId')
-.get((req,res,next) => {
+.get(authenticate.verifyUser, (req,res,next) => {
     Leaders.findById(req.params.apply.leaderId)
     .then((leader) => {
         res.statusCode = 200;
