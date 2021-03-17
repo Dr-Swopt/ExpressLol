@@ -1,7 +1,9 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
@@ -15,6 +17,7 @@ var dishRouter = require('./routes/dishRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 const uploadRouter = require('./routes/uploadRouter');
+const favoriteRouter = require('./routes/favoriteRouter');
 var app = express();
 // Secure traffic only
 app.all('*', (req, res, next) => {
@@ -30,8 +33,8 @@ const mongoose = require('mongoose');
 const url = config.mongoUrl;
 const Dishes = require('./models/dishes');
 const Leaders = require('./models/leaders');
-const Promotions = require('./models/promotions');
-
+const Promotions = require('./models/promotions'); 
+const Favorites = require('./models/favorite');
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
@@ -58,7 +61,7 @@ app.use('/dishes',dishRouter);
 app.use('/promotions',promoRouter);
 app.use('/leaders',leaderRouter);
 app.use('/imageUpload',uploadRouter);
-
+app.use('/favorites',favoriteRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
